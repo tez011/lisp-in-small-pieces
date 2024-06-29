@@ -1,12 +1,7 @@
+#lang racket
 ; The slow interpreter.
+
 ; All data are closures.
-
-; The environment.
-(define wrong #f)
-(call-with-current-continuation (lambda (k)
-                                  (set! wrong (lambda args (display ">>>> ERROR") (newline) (k args)))))
-
-; Known types. All values are closures that respond to messages.
 (define the-empty-list
   (lambda (msg)
     (case msg
@@ -127,6 +122,10 @@
                                       (if (= arity (length v*))
                                           (value v* s k) ; invoke
                                           (wrong "incorrect arity" 'name))))))))))
+(define wrong #f)
+(call-with-current-continuation (lambda (k)
+                                  (set! wrong (lambda args (display ">>>> ERROR") (newline) (k args)))))
+
 (definition true (create-boolean #t))
 (definition false (create-boolean #f))
 (definition nil the-empty-list)
